@@ -17,6 +17,5 @@ def test_divide():
     assert divide(10, 2) == 5
 
 def test_divide_by_zero():
-    # This checks that the code correctly raises an error when dividing by zero
     with pytest.raises(ValueError):
         divide(10, 0)
