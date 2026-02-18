@@ -1,12 +1,19 @@
 {
   "name": "weather-app",
   "version": "1.0.0",
-  "description": "Minimal Weather App for CI workflow",
+  "description": "A production-ready weather check utility",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "node test.js"
   },
-  "author": "Your Name",
-  "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
