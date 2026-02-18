@@ -1,13 +1,14 @@
-name: Greeting Workflow
+name: Hello CI
 on: [push]
 
 jobs:
-  say-hello:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
+      - name: Install pytest
+        run: pip install pytest
 
-      - name: Run Python Tests
-        run: python3 test_calc.py
+      - name: Run tests
+        run: pytest
