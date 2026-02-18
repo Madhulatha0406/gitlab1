@@ -10,11 +10,9 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    # --- MATRIX SECTION ---
     strategy:
       matrix:
         node-version: [18.x, 20.x]
-    # ----------------------
 
     steps:
       - name: Checkout Code
@@ -24,28 +22,27 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          # This caches your dependencies for faster runs
+          cache: 'npm'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci # 'npm ci' is cleaner for production/CI than 'npm install'
 
       - name: Run Unit Tests
-        run: node test.js
+        run: npm test # This calls "node test.js" via your package.json
 
-      - name: Run Security Check
-        run: node app.js
-        env:
-          WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
+      - name: Run Security Audit
+        # This checks for vulnerabilities in your 'dependencies' automatically
+        run: npm audit --audit-level=high
 
   package:
-    # Only runs if build-and-test succeeds for BOTH Node versions
     needs: build-and-test
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
       - name: Create Build Artifact
-        run: zip -r weather-app-dist.zip . -x "*.git*"
+        run: zip -r weather-app-dist.zip . -x "*.git*" "node_modules/*" ".github/*"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
